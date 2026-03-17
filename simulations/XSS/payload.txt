@@ -1,0 +1,3 @@
+<script> alert("Simulated XSS Attack")</script>
+
+#malicious script input against the form
