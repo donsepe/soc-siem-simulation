@@ -58,4 +58,23 @@ This dual setup allowed me to:
 - **Summary**  
 - **Evidence**  
 - **Scope & Impact**
-- **Recommendations**  
+- **Recommendations**
+
+- ## Skills Demonstrated
+
+- Log analysis
+- Threat detection
+- Incident triage
+- SIEM investigation
+
+## Tools Used
+
+- Kali Linux
+- Hydra
+- Apache2
+- Splunk SIEM
+- Setup Forwarding
+- DVWA (optional upgrade)
+
+## Author
+Don Sepe
