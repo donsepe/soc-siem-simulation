@@ -1,0 +1,20 @@
+XSS Injection - [192.168.1.8] - [Medium]
+
+1. Summary (Detected an XSS Attack on a Web Server)
+* What happened: True Positive
+* Severity: Medium
+
+2. Evidence
+* Attacker IP/Source: * 192.168.1.7
+* Raw Log Snippet: 192.168.1.7 - - [10/Mar/2026:10:41:07 +0800] "GET /testxss.php?name=%3Cscript%3E+alert%28%22Simulated+XSS+Attack%22%29%3C%2Fscript%3E HTTP/1.1" 200 427 "http://192.168.1.8/testxss.php?name=%3Cscript%3E+alert%28%22XS+Attack%22%29%3C%2Fscript%3E" "Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0"
+* Payload Analysis: <script> alert("Simulated XSS Attack")</script> 
+
+3. Scope & Impact
+* Affected Systems: Web Server (192.168.1.8)
+* Successful? HTTPS Status 200 signifies a successful request reply for the server to the attacker. 
+  However, no sign of exfiltration is observed and it is likely a reconnaissance from the attacker.
+  No isolation or suspension of User Account.
+
+4. Action Taken / Recommendation
+* Immediate Action: Blocked the IP using SOAR according to playbook
+* Recommendation:   1. Coordinate with developers to sanitize input in the vulnerable form. 2. Implement WAF to prevent hackers from injecting XSS and SQLi. 3. Implement output encoding to neutralize script tags.
