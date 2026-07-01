@@ -55,9 +55,7 @@ Using the **Group Policy Management Console (GPMC)**, custom operational securit
     * **Objective:** Standardizes workstation configurations and defines explicit rules for remote connections, such as managing Remote Desktop Protocol (RDP) access.
 * **Granular Restrictive Overrides (`GPO_Accounting_Restrictions`):** 
     * **Scope:** Applied directly and exclusively to the `Accounting` OU.
-    * **Objective:** Enforces the Principle of Least Privilege by blocking unprivileged standard accounts from modifying critical OS infrastructure, accessing administrative shares, or launching unauthorized processes.
-* **Advanced Audit Policy Configuration:**
-    * **Objective:** Mandates the generation of granular success/failure security logs (Process Creation, Account Logon, and Object Access). This configuration serves as the critical telemetry engine supplying local Event Viewer and upstream SIEM tools with the data used during attack analysis.
+    * **Objective:** Enforces the Principle of Least Privilege by blocking access to Control Panel and Command Prompt but has access on Accounting Folder and a printer located in the Server where the DC is running.
 
 ### Group Policy Hierarchy Verification
 The following screenshot captures the live GPMC architecture, proving clean enforcement lines and scoped policy linkage across corporate objects:
