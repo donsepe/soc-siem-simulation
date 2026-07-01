@@ -1,0 +1,1 @@
+Simulated internal network reconnaissance using command-line asset mapping (net use attempts against the DC administrative shares) and interactive GUI redirection using Remote Desktop Protocol (mstsc.exe) hijacking.
