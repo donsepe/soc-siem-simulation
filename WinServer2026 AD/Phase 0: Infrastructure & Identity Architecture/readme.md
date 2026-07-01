@@ -1,10 +1,21 @@
 Phase 0: Infrastructure & Identity ArchitecturePhase 0: Infrastructure & Identity Architecture
-1. Cloud Provisioning & Network Configuration (Azure)
-Compute Provisioning: Deployed a Windows Server virtual machine instance within Microsoft Azure to serve as the enterprise root authority.
 
-Network Isolation: Configured Azure Network Security Groups (NSGs) to restrict traffic, ensuring the lab network remains isolated while allowing secure administrative management access.
+## 1. Cloud Provisioning & Network Topology (Microsoft Azure)
+The foundational infrastructure for this laboratory is hosted within Microsoft Azure, mimicking a modern hybrid-cloud enterprise deployment. 
 
-Static IP Mapping: Assigned a static internal private IP address to the server via the Azure Portal to prevent IP shifting and ensure stable Domain Name System (DNS) resolution.
+* **Virtual Machine Context:** Provisioned a Windows Server instance (`Windoe`) utilizing a private address space of `10.0.0.0/24` with the specific static internal mapping of `10.0.0.6`.
+* **Network Security Group (NSG) Controls:** * Deployed a dedicated NSG (`Windoe-nsg`) to govern ingress and egress traffic boundaries.
+    * Configured Inbound Port Rule `300` to allow Remote Desktop Protocol (RDP) traffic over port `3389` exclusively to authorize administrative management sessions.
+* **Management Connectivity:** Secure remote management is established from an external administrator console utilizing explicit administrative credentials (`donadmin`) targeted at the public interface.
+
+### Cloud Infrastructure Verification
+The screenshots below validate the live Azure networking topology, interface configurations, and management access profiles:
+
+#### Azure Network Security Group & IP Configuration
+![Azure Networking Settings](./images/azure-networking.png)
+
+#### Remote Desktop Management Profile
+![RDP Client Configuration](./images/rdp-config.png)
 
 2. Active Directory Domain Services (AD DS) Initialization
 The root identity architecture was initialized and promoted using native Windows management tools with the following structural parameters:
