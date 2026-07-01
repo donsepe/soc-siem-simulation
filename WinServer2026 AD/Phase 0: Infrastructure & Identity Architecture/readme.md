@@ -17,18 +17,19 @@ The screenshots below validate the live Azure networking topology, interface con
 #### Remote Desktop Management Profile
 ![RDP Client Configuration](./images/rdp-config.png)
 
-2. Active Directory Domain Services (AD DS) Initialization
+## 2. Active Directory Domain Services (AD DS) Initialization
 The root identity architecture was initialized and promoted using native Windows management tools with the following structural parameters:
 
-Deployment Operation: Created a brand-new Active Directory Forest.
+* **Deployment Operation:** Created a brand-new Active Directory Forest.
+* **Root Domain Name:** `mydomain.local`
+* **NetBIOS Name:** `MYDOMAIN`
+* **Operating System Base:** Windows Server 2025/2026 Datacenter Azure Edition.
+* **Core Roles:** Integrated Active Directory Domain Services (AD DS) side-by-side with localized DNS services to handle domain-wide name resolution.
 
-Root Domain Name: MYDOMAIN.local
+### Server Environment Verification
+The following screenshot captures the final operational properties from the Server Manager dashboard, validating successful forest promotion and active domain state:
 
-NetBIOS Name: MYDOMAIN
-
-Forest & Domain Functional Levels: Set to the latest functional levels to enable modern security features and enhanced cryptographic controls.
-
-Global Catalog (GC): Initialized on the root Domain Controller to handle centralized authentication requests and object lookups.
+![Server Manager Domain Verification](./images/server-manager-ad.png)
 
 ## 3. Organizational Structure & Identity Management (IAM)
 Using **Active Directory Users and Computers (ADUC)**, a granular corporate hierarchy was established under a centralized parent container to segment identities, manage access groups, and test explicit privilege boundaries:
