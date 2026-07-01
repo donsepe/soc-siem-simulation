@@ -19,25 +19,50 @@ Forest & Domain Functional Levels: Set to the latest functional levels to enable
 
 Global Catalog (GC): Initialized on the root Domain Controller to handle centralized authentication requests and object lookups.
 
-3. Organizational Structure & Identity Management (IAM)
-Using Active Directory Users and Computers (ADUC), a logical corporate hierarchy was established to segment identities and test privilege boundaries:
+## 3. Organizational Structure & Identity Management (IAM)
+Using **Active Directory Users and Computers (ADUC)**, a granular corporate hierarchy was established under a centralized parent container to segment identities, manage access groups, and test explicit privilege boundaries:
 
-Organizational Units (OUs): Built custom containers (e.g., Employees, Privileged_Accounts) to separate standard operational personnel from highly privileged administration accounts.
+* **Organizational Units (OUs):** * `Corp-Objects`: The primary parent container for enterprise assets.
+    * `IT` (Sub-OU): Contains administrative personnel, local technical groups, and endpoint systems.
+    * `Accounting` (Sub-OU): Contains operational department users and data access groups.
+* **Identity Objects & Departmental Layout:**
+    * **IT Department Asset Profile:**
+        * `Francis Sepe as sepef`: Configured as a highly privileged administrative user.
+        * `Mei Ling as lingm`: Provisioned as an unprivileged standard technical operator.
+        * `IT_Admin_Group`: A Global Security Group engineered to manage administrative privileges across domain assets.
+        * `ClientWindows`: The active client workstation account domain-joined to the environment.
+    * **Accounting Department Asset Profile:**
+        * `Liam Smith as smithl`: Provisioned as a standard corporate accounting profile.
+        * `G-Accounting-Data`: A Global Security Group engineered to manage file share and ledger permissions.
 
-Identity Objects:
+### Architecture Verification Blueprints
+Below is the validated active directory state highlighting the departmental segmentation and object provisioning:
 
-donadmin: Provisioned as a high-privileged Domain Administrator account authorized to perform administrative overrides and enterprise-level modifications.
+#### Main Domain Tree Architecture
+![Active Directory Root Structure](./images/aduc-root.png)
 
-lingm: Provisioned as a standard, unprivileged domain user profile with highly restricted local permissions.
+#### IT Department Object Layout
+![IT OU Infrastructure](./images/aduc-it.png)
 
-Departmental Accounts: Configured supplementary test accounts within specific OUs to simulate varied organizational access requirements.
+#### Accounting Department Object Layout
+![Accounting OU Infrastructure](./images/aduc-accounting.png)**
 
-4. Group Policy Object (GPO) Deployment
-Using the Group Policy Management Console (GPMC), custom operational policies were engineered and linked to the OU structure to mandate structural security configurations:
+## 4. Group Policy Object (GPO) Deployment & Security Baselines
+Using the **Group Policy Management Console (GPMC)**, custom operational security policies were engineered and linked directly to the OU hierarchy. Rather than relying on default domain configurations, these policies establish explicit authorization profiles, baseline access restrictions, and advanced auditing requirements:
 
-Advanced Audit Policy GPO: link: Engineered and deployed a specific auditing policy to force target endpoints to generate granular local event logs for account logons, process creation, and object access. This GPO serves as the engine that generates the precise forensic telemetry (Event IDs 4624, 4648, 4776) often monitored in the SOC environments.
+* **Global Access Controls (`GPO_Workstation_RDP_Baseline`):** 
+    * **Scope:** Linked at the `Corp-Objects` level to enforce security constraints across all sub-OUs globally.
+    * **Objective:** Standardizes workstation configurations and defines explicit rules for remote connections, such as managing Remote Desktop Protocol (RDP) access.
+* **Granular Restrictive Overrides (`GPO_Accounting_Restrictions`):** 
+    * **Scope:** Applied directly and exclusively to the `Accounting` OU.
+    * **Objective:** Enforces the Principle of Least Privilege by blocking unprivileged standard accounts from modifying critical OS infrastructure, accessing administrative shares, or launching unauthorized processes.
+* **Advanced Audit Policy Configuration:**
+    * **Objective:** Mandates the generation of granular success/failure security logs (Process Creation, Account Logon, and Object Access). This configuration serves as the critical telemetry engine supplying local Event Viewer and upstream SIEM tools with the data used during attack analysis.
 
-Security Baseline Enforcement: Enforced restrictions via GPO to block standard users from modifying critical local machine infrastructure or accessing unauthorized enterprise resources.
+### Group Policy Hierarchy Verification
+The following screenshot captures the live GPMC architecture, proving clean enforcement lines and scoped policy linkage across corporate objects:
+
+![Group Policy Management Configuration](./images/gpmc-baselines.png)
 
 5. Client Endpoint Integration
 DNS Realignment: Modified the client workstation's local network adapter settings, pointing its primary IPv4 DNS server directly to the static private IP address of the Azure Domain Controller.
