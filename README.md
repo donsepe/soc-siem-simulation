@@ -1,80 +1,47 @@
-# soc-siem-simulation
-Home SOC Lab
+# Multi-Platform Security Operations Center (SOC) & SIEM Lab
 
-🔐 Security Simulations: Brute Force & XSS
+## 🔎 Project Overview
+This repository documents the end-to-end design, implementation, and management of a hybrid Security Operations Center (SOC) home lab. The environment bridges on-premises virtualization with enterprise cloud architecture to simulate real-world enterprise infrastructure, defensive monitoring, adversary simulation, and automated incident response pipelines.
 
-## 🔎 Overview
-This repository documents my hands-on cybersecurity simulations.  
-The following are some of the attacks I have practiced in my lab environment:
-- **Brute Force Attack** against an Ubuntu VM via SSH
-- **Cross-Site Scripting (XSS)** due to poor input sanitization on a vulnerable form.
-
-The repo demonstrates not only the offensive techniques but also the defensive strategies and triaging reports that for each attack.
+The primary objective of this lab is to achieve deep operational visibility across multiple operating systems, manage centralized enterprise identity structures, execute controlled attack simulations, and build automated defense mechanisms against modern threat vectors.
 
 ---
----
 
-## 🖥️ Lab Setup
-I built a three-machine environment:
+## 🛠️ Infrastructure & Lab Architecture
 
-### Brute Force Attack Setup
-- **Victim VM**: Ubuntu CLI server (installed UF sending it to port 9997 of SIEM Server)
-- **Attacker VM**: Kali Linux machine used to launch brute force attempts (installed UF sending it to port 9997 of SIEM Server)
-- **SIEM Server**: My host M1 Mac, configured to collect logs for monitoring and triaging
+### 1. Centralized Logging & SIEM Layer
+*   **Splunk Enterprise SIEM:** Deployed as the central analytics engine for log aggregation, custom event parsing, correlation, dashboarding, and threat hunting.
+*   **Splunk Universal Forwarders (UF):** Endpoint agents deployed across target workstations, web servers, and domain controllers to securely parse and ship local event streams (Windows Event Logs, Linux Syslog, Apache Web Logs) over port 9997.
 
-### XSS Attack Setup
-- **Victim VM**: A second Kali Linux VM, configured with **Apache2** to host a vulnerable web form  
-- **Attacker VM**: Kali Linux machine used to inject malicious script hosted by the victim system
-- **SIEM Server**: My host M1 Mac, again serving as the central log collector and analysis point  
+### 2. Enterprise Detection & XDR Layer
+*   **Azure Cloud Wazuh Deployment:** Orchestrated a cloud-native Wazuh Manager instance hosted on Microsoft Azure to monitor distributed external assets, handling cloud network security groups (NSGs) and agent-manager routing.
+*   **Local Wazuh Infrastructure:** Implemented an on-premises Wazuh stack paired with an integrated API framework to test local log parser rules, monitor system integrity (FIM), and track system performance.
+*   **Automated Active Response:** Configured the Wazuh engine to dynamically trigger automated remediation scripts—such as firewall drops, connection drops, and IP banning—upon detecting high-severity alerts.
 
-This dual setup allowed me to:
-- Launch attacks from Kali  
-- Observe vulnerabilities on different victim environments (Ubuntu CLI for brute force, Apache2 web server for XSS)  
-- Forward logs to the SIEM for structured triaging and reporting
+### 3. Identity & Target Network Layer
+*   **Active Directory Domain Services (AD DS):** Built a Windows Server domain controller infrastructure managing domain-joined client workstations, organizational units (OUs), group policies (GPOs), and centralized authentication tracking.
 
 ---
----
 
-## ⚔️ Attack Simulations
+## ⚔️ Implemented Security Exercises & Adversary Simulations
 
-### 1. Brute Force Attack (SSH)
-- **Scenario**: Multiple password attempts against the SSH service of the Ubuntu victim VM.  
-- **Tool Used**: Hydra (on Kali Linux) to automate brute force attempts.  
-- **Artifacts**: Hydra command used for the attack, Password text file (wordlist), Output logs showing failed/successful attempts, Triaging report 
-- **Impact**: Thousands of logs linked to the guessing of credentials.
-- **Defense**: Rate limiting, account lockout and MFA
+### 1. Automated Brute-Force Attacks (Hydra)
+*   **Adversary Simulation:** Executed high-velocity password guessing attacks against target SSH and RDP endpoints using **Hydra** via a Kali Linux attack platform.
+*   **SIEM Visibility & Detection:** Logged thousands of rapid authentication failures. Splunk Universal Forwarders ingested `/var/log/auth.log` and Windows Security Logs, feeding them into Splunk SIEM to build high-fidelity brute-force correlation alerts.
+*   **Containment:** Validated both Splunk tracking alerts and Wazuh's automated Active Response mechanisms to drop the malicious attacker IP at the host firewall layer.
 
-### 2. Cross-Site Scripting (XSS)
-- **Scenario**: Malicious script injection due to poor input sanitization in a web form hosted on Apache2 (second Kali VM).  
-- **Artifacts**: Vulnerable form, diagram, triaging report.  
-- **Impact**: Script execution in the user’s browser, potential session hijacking or data theft.  
-- **Defense**: Input validation and output encoding
+### 2. Cross-Site Scripting (XSS) Attacks
+*   **Adversary Simulation:** Targeted a web application hosting an unauthenticated, poorly sanitized web form (e.g., Apache2/PHP test environment) to inject malicious JavaScript payloads.
+*   **SIEM Visibility & Detection:** Ingested raw Apache web access and error logs (`access.log`) into Splunk. Built custom regex patterns within Splunk to flag common XSS indicators (e.g., `<script>`, `String.fromCharCode`, and encoded URI parameters) targeting the web application.
+
+### 3. Centralized Identity Auditing
+*   **Active Directory Monitoring:** Parsed critical Windows security event logs (such as Event ID 4624 for successful logons and Event ID 4625 for failed authentication) to detect credential stuffing or lateral movement.
 
 ---
----
 
-## 📊 Triaging Reports
-- **Attack Vector**  
-- **Summary**  
-- **Evidence**  
-- **Scope & Impact**
-- **Recommendations**
-
-- ## Skills Demonstrated
-
-- Log analysis
-- Threat detection
-- Incident triage
-- SIEM investigation
-
-## Tools Used
-
-- Kali Linux
-- Hydra
-- Apache2
-- Splunk SIEM
-- Setup Forwarding
-- DVWA (optional upgrade)
-
-## Author
-Don Sepe
+## 🚀 Key Technical Skills Demonstrated
+*   **SIEM Engineering:** Configuration of Splunk indexes, custom source typing, forwarding architectures, field extractions, and searching using Splunk Processing Language (SPL).
+*   **XDR & EDR Administration:** Creating customized decoders and rulesets in Wazuh, configuring active response thresholds, and managing cloud security nodes.
+*   **Adversary Emulation:** Utilizing penetration testing utilities (Hydra, custom XSS scripts) ethically to test and validate defensive security baselines.
+*   **Identity Provider Management:** Configuring Active Directory architectures, enforcing security-focused GPOs, and auditing Kerberos/NTLM authentication loops.
+*   **Cloud Architecture & Hardening:** Deploying cloud compute instances, designing secure Virtual Networks (VNets), and implementing restrictive Network Security Group (NSG) firewalls.
