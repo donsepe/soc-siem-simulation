@@ -9,7 +9,7 @@
 * **Server OS** Ubuntu 22.04
 * **Honeypot Tool** T-Pot, multi-honeypot architecture
 * **Analysis Tools** Elastic Stack (Elasticsearch, Logstash & Kibana)
-* ![Oracle Cloud VM instance](images/tpot-home.png)
+* ![tpot-home](images/tpot-home.png)
 * ![Oracle Cloud VM instance](images/tpot-VM.png)
 
 * **Exposed Sensors** Cowrie (SSH & Telnet), HOneyPHP (Web Apps), RDPhoneypot (RDP)
