@@ -9,7 +9,11 @@ These information can be useful to analyze current security posture of systems.
 * **Server OS** Ubuntu 22.04
 * **Honeypot Tool** T-Pot, multi-honeypot architecture
 * **Analysis Tools** Elastic Stack (Elasticsearch, Logstash & Kibana)
+* ![Oracle Cloud VM instance](images/tpot-home.png)
+* ![Oracle Cloud VM instance](images/tpot-VM.png)
+
 * **Exposed Sensors** Cowrie (SSH & Telnet), HOneyPHP (Web Apps), RDPhoneypot (RDP)
+* ![Oracle Cloud VM instance](images/discover-sessionID.png)
 
 ## 📐 Architecture & Connectivity
 * **Exposed Ports** Ports 22,23, 80, 443, 3389 were intentionally left open for anyone (0.0.0.0/0)
@@ -17,7 +21,8 @@ These information can be useful to analyze current security posture of systems.
 * **SSH Administration Interface** After installing the honeypot, SSH was configured from port 22 to port 64295 for restricted admin access.
 * **ELK Stack and other WebUI Tools** Bound to loopback address (127.0.0.1:64297)
 
-## After Successful Setup attacks came in as seen in the Attack Map. A 'log from the Threat Actor with the most hits was analyzed
+## After Successful Setup, attacks came in as seen in the Attack Map. A log from the Threat Actor with the most hits was analyzed
+* ![Oracle Cloud VM instance](images/attack-map.png)
 
 * **INCIDENT REPORT**
 Triage Timestamp: 2026-07-15 14:33:55 PH TIME
@@ -28,10 +33,15 @@ Attack Vector: Automated Credential Stuffing / SSH Bruteforce
 Source IP: 91.92.42.227
 Geo Location: Eygelshoven, Limburg, The Netherlands
 IP Reputation: Known Attacker
+* ![Attacker Profile](images/attackerdetails.png)
+* ![Attacker Profile](images/ip-reputation.png)
 
 * **2. Chain of Events**
 1. 14:33:55 UTC+8 - Threat actor established SSH connection through port 22 with Session ID: 846eba3f9b27
 2. 14:33:57 UTC+8 - Credential Injection was attempted a login using username: 'trade' and password: '123456'
+* ![Credential Stuffing attempt](images/credentialstuffing.png)
+* ![Credential Stuffing attempt](images/login-attempt.png)
+
 3. 14:33:59 UTC+8 - The attacker disconnected after the failed login attempt.
 
 * **Total time of interaction: about 3.7 secs*
